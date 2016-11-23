@@ -32,7 +32,7 @@ export var InterestsPageTemplate = Container.template($ => ({
 	top: 0, left: 0, right: 0, bottom: 0,
 	skin: CommonSkins.BackgroundDark,
 	behavior: Behavior({
-		onCreate: function(container, data) {	    	container.interval = 1000;	        container.duration = 10000000;        	container.start();	    },
+		onCreate: function(container, data) {	    	container.interval = 10000;	        container.duration = 10000000;        	container.start();	    },
 		onTimeChanged: function(container) {
 			ApiManager.CheckMatch(Session.getUser().id, function(matchUser) {
 				let mainContainer = container;

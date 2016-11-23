@@ -9,6 +9,7 @@ import { LoginSignupPageTemplate } from '../screens/login-signup-page';
 import { MatchPageTemplate } from '../screens/match-page';
 import { ProfilePageTemplate } from '../screens/profile-page';
 import { SplashPageTemplate } from '../screens/splash-page';
+import { UpdateInterestsPageTemplate } from '../screens/update-interests-page';
 import { WelcomePageTemplate } from '../screens/welcome-page';
 
 export var CommonVars = {
@@ -31,6 +32,7 @@ export var CommonSkins = {
 
 	// Color Skins
 	Background: new Skin({ fill: "white" }),
+	BackgroundDown: new Skin({ fill: "#FAFAFA" }),
 	BackgroundDark: new Skin({ fill: "#EDEDED" }),
 	Primary: new Skin({ fill: CommonVars.PrimaryColor }),
 	PrimaryDark: new Skin({ fill: CommonVars.PrimaryDarkColor }),
@@ -114,8 +116,7 @@ export var CommonTemplates = {
 		],
 		behavior: Behavior({
 			onTouchBegan: function(container) {
-				trace(container.name + " \n");
-				container.skin = CommonSkins.PrimaryDarkSkin;
+				container.skin = CommonSkins.PrimaryDark;
 				container.buttonText.style = new Style({ 
 					font: ($.textSize != null ? $.textSize + "px" : "26px") + " Segoe UI Semilight", 
 					color: "white", horizontal: "center"
@@ -156,7 +157,6 @@ export var CommonTemplates = {
 		],
 		behavior: Behavior({
 			onTouchBegan: function(container) {
-				trace(container.name + " \n");
 				container.skin = CommonSkins.PrimaryDark;
 				container.buttonText.style = new Style({ 
 					font: ($.textSize != null ? $.textSize + "px" : "26px") + " Segoe UI Semilight", 
@@ -265,5 +265,6 @@ export var CommonPages = {
 	Match: new MatchPageTemplate({}),
 	Profile: new ProfilePageTemplate({}),
 	Splash: new SplashPageTemplate({}),
+	UpdateInterests: new UpdateInterestsPageTemplate({}),
 	Welcome: new WelcomePageTemplate({}),
 }

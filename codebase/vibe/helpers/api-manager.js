@@ -29,12 +29,35 @@ let UserList = [
 	{ id: 0, name: "Jane Moe", currentInterest: 0, bio: "I love dogs; people are okay", image: "http://rs1259.pbsrc.com/albums/ii544/noerpamoengkas/Ardi%20and%20Blog/Information%20and%20Computer%20Technology/FacebookFemale_web_V.jpg~c200" },
 	{ id: 1, name: "John Doe", currentInterest: 0, bio: "I love dogs; people are okay", image: "http://rs1216.pbsrc.com/albums/dd363/gamestar32/Untitled-1.jpg~c200" },
 ];
-let Relations = [
+let Decisions = [
 	// { id: 1, user: 1, interest: 0, type: "Like" } 
 ];
 
+var TEST_DECISION_LIST = [
+	{ id: 1, decision_type: "like", interest: { title: "Interest 1" }},
+	{ id: 2, decision_type: "dislike", interest: { title: "Interest 2" }},
+	{ id: 3, decision_type: "skip", interest: { title: "Interest 3" }},
+	{ id: 4, decision_type: "like", interest: { title: "Interest 4" }},
+	{ id: 5, decision_type: "like", interest: { title: "Interest 5" }},
+	{ id: 6, decision_type: "skip", interest: { title: "Interest 6" }},
+	{ id: 7, decision_type: "like", interest: { title: "Interest 7" }},
+	{ id: 8, decision_type: "dislike", interest: { title: "Interest 8" }}
+]
+
 let apiCallResult = { message: "match", match: { id: 0, name: "Jane Moe", currentInterest: 0, bio: "I love dogs; people are okay", image: "http://rs1259.pbsrc.com/albums/ii544/noerpamoengkas/Ardi%20and%20Blog/Information%20and%20Computer%20Technology/FacebookFemale_web_V.jpg~c200" } };
 //let apiCallResult = { message: "none" };
+
+let baseUrl = "https://vibe-alexyku.c9users.io"
+let URLS = {
+	INTEREST: function(id) { return baseUrl + "/interests/" + id },
+	INTERESTS: baseUrl + "/interests",
+	USER: function(id) { return baseUrl + "/users/" + id },
+	USERS: baseUrl + "/users",
+	USER_INTERESTS: function(id) { return baseUrl + "/users/" + id + "/interests"},
+	DECISION: function(id) { return baseUrl + "/decisions/" + id },
+	DECISIONS: baseUrl + "/decisions",
+}
+let METHODS = { GET: "get", POST: "post", PUT: "put", DELETE: "delete" }
 
 export var ApiManager = {
 	GetUser: function (userId) {
@@ -47,9 +70,15 @@ export var ApiManager = {
 		var interest = InterestList[UserList[userId].currentInterest];
 		UserList[userId].currentInterest++;
 		return interest;
+		
+		// genericApiCall(URLS.USER(userId), METHODS.GET, nil, function(user_info) {
+		//   genericApiCall(URLS.INTERESTS(user_info.nextInterest), METHODS.GET, nil, function(interests_info) {
+		//   	callback(interests_info)
+		//   });
+		// });
 	},
 	PostDecision: function(userId, interestId, type) {
-		Relations.push({ id: Relations.length, user: userId, interest: interestId, type: type });
+		Decisions.push({ user_id: userId, interest_id: interestId, decision_type: type });
 	},
 	LoginRequest: function(information, callback) {
 		Session.begin(UserList[0]);
@@ -59,5 +88,29 @@ export var ApiManager = {
 		if (apiCallResult != undefined && apiCallResult.message == "match") {
 			callback(apiCallResult.match);
 		}
+	},
+	PullUserDecisions: function(userId, callback) {
+		
+	},
+	AccessUserDecisions: function(userId) {
+		return TEST_DECISION_LIST;
 	}
+}
+
+function genericApiCall(url, method, json, callback) {
+	var message = new Message(url);
+    var promise = message.invoke(Message.TEXT)
+    promise.then(text => {
+      if (0 == message.error && 200 == message.status) {
+          try {
+            callback(JSON.parse(text));
+          }
+          catch (e) {
+            throw('Web service responded with invalid JSON!\n');
+          }
+      }
+      else {
+          trace('Request Failed - Raw Response Body: *'+text+'*'+'\n');
+      }
+    });
 }

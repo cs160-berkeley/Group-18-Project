@@ -10,7 +10,7 @@ export var SplashPageTemplate = Container.template($ => ({
 	}),
 	active: true,
 	behavior: Behavior({
-		onCreate: function(container, data) {	    	container.interval = 2000;	        container.duration = 1;        	container.start();	    },
+		onCreate: function(container, data) {	    	container.interval = 2600;	        container.duration = 1;        	container.start();	    },
 		onTimeChanged: function(container) {	
 			let mainContainer = container;
 			mainContainer.container.run(new Push(), mainContainer, CommonPages.Welcome,
