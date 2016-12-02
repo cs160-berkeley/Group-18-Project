@@ -26,17 +26,17 @@ export var WelcomePageTemplate = Container.template($ => ({
 	contents: [
 		new Label({
 			top: textTopMargin, left: 0, right: 0, height: 30,
-			style: new Style({ font: "24px Apercu Bold", color: "white", horizontal: "center" }),
+			style: new Style({ font: "24px " + CommonVars.HeadingFont + " Bold", color: "white", horizontal: "center" }),
 			string: "Welcome to Vibe"
 		}),
 		new Label({
 			top: textTopMargin + 30, left: 0, right: 0, height: 30,
-			style: new Style({ font: "16px Apercu Regular", color: "white", horizontal: "center" }),
+			style: new Style({ font: "16px " + CommonVars.ParagraphFont + " Regular", color: "white", horizontal: "center" }),
 			string: "Please connect the device"
 		}),
 		new Label({
 			top: textTopMargin + 47, left: 0, right: 0, height: 30,
-			style: new Style({ font: "16px Apercu Regular", color: "white", horizontal: "center" }),
+			style: new Style({ font: "16px " + CommonVars.ParagraphFont + " Regular", color: "white", horizontal: "center" }),
 			string: "with the cord that came"
 		}),
 		new Label({

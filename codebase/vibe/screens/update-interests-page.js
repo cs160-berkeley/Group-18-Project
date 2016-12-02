@@ -1,5 +1,7 @@
 import { CommonPages, CommonVars, CommonTemplates, CommonSkins, CommonStyles } from "../helpers/common";
 import { ApiManager } from "../helpers/api-manager";
+import { Session } from "../helpers/sessions";
+import { VerticalScroller, VerticalScrollbar, TopScrollerShadow, BottomScrollerShadow } from '../libraries/scroller';
 
 let itemHeight = 60;
 let iconImageSize = 150;
@@ -10,7 +12,7 @@ let LikeIconSkin = new Skin({
 });
 let SkipIconSkin = new Skin({
 	width: iconImageSize, height: iconImageSize,
-	texture: new Texture("../assets/images/skip-icon.png"),
+	texture: new Texture("../assets/images/pass-icon.png"),
     aspect: "stretch"
 });
 let DislikeIconSkin = new Skin({
@@ -22,7 +24,7 @@ var InterestItemTemplate = Container.template($ => ({
 	name: "interestItem" + $.index,
 	left: 0, right: 0,
 	skin: CommonSkins.Background,
-	top: $.index * (itemHeight + 1) + CommonVars.NavBarHeight,
+	top: $.index * (itemHeight + 1),
 	height: itemHeight,
 	contents: [
 		new Label({ name: "decisionTypeHelper", left: -1000, string: $.decisionType }),
@@ -38,7 +40,7 @@ var InterestItemTemplate = Container.template($ => ({
 			top: 0, bottom: 0, right: 0, width: 60,
 			skin: function(){
 				if ($.decisionType == "like") return LikeIconSkin;
-				if ($.decisionType == "skip") return SkipIconSkin;
+				if ($.decisionType == "pass") return SkipIconSkin;
 				if ($.decisionType == "dislike") return DislikeIconSkin;
 				else return undefined;
 			}()
@@ -46,11 +48,7 @@ var InterestItemTemplate = Container.template($ => ({
 	],
 	active: true,
 	behavior: Behavior({
-		onTouchBegan: function(container) {
-			container.skin = CommonSkins.BackgroundDown;
-		},
 		onTouchEnded: function(container) {
-			container.skin = CommonSkins.Background;
 			rotateInterest(container);
 		},
 	})
@@ -59,40 +57,68 @@ var InterestItemTemplate = Container.template($ => ({
 export var UpdateInterestsPageTemplate = Container.template($ => ({
 	left: 0, right: 0, bottom: 0, top: 0,
 	skin: CommonSkins.BackgroundDark,
-	contents: function(){
-		var contents = [];
-		contents.push(new CommonTemplates.NavBar({ 
+	contents: [
+		new Container({
+			top: CommonVars.NavBarHeight,
+			bottom: 0, left: 0, right: 0,
+			behavior: Behavior({
+				onDisplayed: function(container) {
+					container.empty();
+					ApiManager.GetUserDecisions(Session.getUser().uid, function(response) {
+						// Creates properly sized container for all items to fit within
+						var scollableContent = new Container({
+							left: 0, right: 0, top: 0, 
+							height: response.decisions.length * (itemHeight + 1),
+						});
+						for (var i = 0; i < response.decisions.length; i++) {
+							var decision = response.decisions[i];
+							scollableContent.add(new InterestItemTemplate({
+								index: i,
+								title: decision.interest.name,
+								decisionType: decision.decision_type,
+								decisionId: decision.id
+							}));
+						}
+						container.add(VerticalScroller($, { 				            active: true, top: 0, bottom: 0,				            contents: [				                scollableContent,				                VerticalScrollbar(), 				                //TopScrollerShadow(), 				                //BottomScrollerShadow(),    				            ]                     				        }));
+					}, function() {
+						// ERROR HERE
+					});
+				}
+			})
+		}),
+		new CommonTemplates.NavBar({ 
 			screenTitle: "Update Interests",  
 			backPage: "Profile"
-		}));
-		var decisionsList = ApiManager.AccessUserDecisions();
-		for (var i = 0; i < decisionsList.length; i++) {
-			contents.push(new InterestItemTemplate({
-				index: i,
-				title: decisionsList[i].interest.title,
-				decisionType: decisionsList[i].decision_type,
-				decisionId: decisionsList[i].id
-			}));
-		}
-		return contents
-	}()
+		}),
+	]
 }));
 
 function rotateInterest(interestItemContainer) {
 	var newDecisionType = "";
 	if (interestItemContainer.decisionTypeHelper.string == "like") { 
-		newDecisionType = "skip";
-		interestItemContainer.interestItemDecisionIcon.skin = SkipIconSkin;
+		ApiManager.UpdateDecision(interestItemContainer.decisionIdHelper.string, "pass", function(response) {
+			interestItemContainer.interestItemDecisionIcon.skin = SkipIconSkin;
+			interestItemContainer.decisionTypeHelper.string = "pass";
+		}, function() {
+			// ERROR HERE
+		});
 	}
-	if (interestItemContainer.decisionTypeHelper.string == "skip") { 
-		newDecisionType = "dislike";
-		interestItemContainer.interestItemDecisionIcon.skin = DislikeIconSkin;
+	if (interestItemContainer.decisionTypeHelper.string == "pass") { 
+		ApiManager.UpdateDecision(interestItemContainer.decisionIdHelper.string, "dislike", function(response) {
+			interestItemContainer.interestItemDecisionIcon.skin = DislikeIconSkin;
+			interestItemContainer.decisionTypeHelper.string = "dislike";
+		}, function() {
+			// ERROR HERE
+		});
 	}
 	if (interestItemContainer.decisionTypeHelper.string == "dislike") { 
-		newDecisionType = "like";
-		interestItemContainer.interestItemDecisionIcon.skin = LikeIconSkin;
+		ApiManager.UpdateDecision(interestItemContainer.decisionIdHelper.string, "like", function(response) {
+			interestItemContainer.interestItemDecisionIcon.skin = LikeIconSkin;
+			interestItemContainer.decisionTypeHelper.string = "like";
+		}, function() {
+			// ERROR HERE
+		});
 	}
-	interestItemContainer.decisionTypeHelper.string = newDecisionType;
 	
 	// Add api call here to change decision
 }

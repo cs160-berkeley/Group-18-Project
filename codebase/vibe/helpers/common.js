@@ -21,11 +21,18 @@ export var CommonVars = {
 	TertiaryColor: "#7470FF",
 	TertiaryDarkColor: "#DC6D5D",
 	
+	// Fonts
+	TitleFont: "Montserrat",
+	HeadingFont: "Roboto",
+	ParagraphFont: "Roboto",
+	
 	// Dimensions
 	NavBarHeight: 50,
 	
 	// Misc
 	TransitionDuration: 300,
+	AppWidth: 0,
+	AppHeight: 0,
 };
 
 export var CommonSkins = {
@@ -80,15 +87,15 @@ export var CommonSkins = {
 };
 
 export var CommonStyles = {
-	CenterTitle: new Style({ font: "21px Apercu Bold", color: "white", horizontal: "center" }),
-	LeftTitle: new Style({ font: "21px Apercu Bold", color: "white", horizontal: "left" }),
-	RightTitle: new Style({ font: "21px Apercu Bold", color: "white", horizontal: "right" }),
-	CenterHeading: new Style({ font: "21px Apercu Bold", color: "#424242", horizontal: "center" }),
-	LeftHeading: new Style({ font: "21px Apercu Bold", color: "#424242", horizontal: "left" }),
-	RightHeading: new Style({ font: "21px Apercu Bold", color: "#424242", horizontal: "right" }),
-	CenterParagraph: new Style({ font: "16px Apercu Regular", color: "black", horizontal: "center" }),
-	LeftParagraph: new Style({ font: "16px Apercu Regular", color: "black", horizontal: "left" }),
-	RightParagraph: new Style({ font: "16px Apercu Regular", color: "black", horizontal: "right" }),
+	CenterTitle: new Style({ font: "21px " + CommonVars.TitleFont, color: "white", horizontal: "center" }),
+	LeftTitle: new Style({ font: "21px " + CommonVars.TitleFont, color: "white", horizontal: "left" }),
+	RightTitle: new Style({ font: "21px " + CommonVars.TitleFont, color: "white", horizontal: "right" }),
+	CenterHeading: new Style({ font: "21px " + CommonVars.HeadingFont, color: "#424242", horizontal: "center" }),
+	LeftHeading: new Style({ font: "21px " + CommonVars.HeadingFont, color: "#424242", horizontal: "left" }),
+	RightHeading: new Style({ font: "21px " + CommonVars.HeadingFont, color: "#424242", horizontal: "right" }),
+	CenterParagraph: new Style({ font: "16px " + CommonVars.ParagraphFont + " Regular", color: "black", horizontal: "center" }),
+	LeftParagraph: new Style({ font: "16px " + CommonVars.ParagraphFont + " Regular", color: "black", horizontal: "left" }),
+	RightParagraph: new Style({ font: "16px " + CommonVars.ParagraphFont + " Regular", color: "black", horizontal: "right" }),
 };
 
 export var CommonTemplates = {

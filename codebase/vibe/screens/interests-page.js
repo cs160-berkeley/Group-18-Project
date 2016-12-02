@@ -31,10 +31,10 @@ let ActionItemsPassSkin = new Skin({
 export var InterestsPageTemplate = Container.template($ => ({
 	top: 0, left: 0, right: 0, bottom: 0,
 	skin: CommonSkins.BackgroundDark,
-	behavior: Behavior({
+	/*behavior: Behavior({
 		onCreate: function(container, data) {	    	container.interval = 10000;	        container.duration = 10000000;        	container.start();	    },
 		onTimeChanged: function(container) {
-			ApiManager.CheckMatch(Session.getUser().id, function(matchUser) {
+			ApiManager.GetMatches(Session.getUser().id, function(matchUser) {
 				let mainContainer = container;
 				trace(matchUser.id + " Match User \n");
 				Session.match(matchUser);
@@ -42,7 +42,7 @@ export var InterestsPageTemplate = Container.template($ => ({
 					{ duration: CommonVars.TransitionDuration, direction: "left" });
 			});
 		}
-	}),
+	}),*/
 	contents: [
 		new CommonTemplates.NavBar({ 
 			screenTitle: "Interests",
@@ -71,8 +71,13 @@ export var InterestsPageTemplate = Container.template($ => ({
 						},
 						onTouchEnded: function(container) {
 							container.container.skin = ActionItemsSkin;
-							ApiManager.PostDecision(Session.getUser().id, Session.getUser().currentInterest - 1, "like");
-							nextCard(container.container.container.last);
+							if (!Session.isEndOfInterests()) {
+								ApiManager.PostDecision(Session.getUser().uid, Session.getCurrentInterests().id, "like", function(response) {
+									nextCard(container.container.container.last);
+								}, function() {
+									// SHOW CONNECTION ERROR
+								});
+							}
 						}
 					})
 				}),
@@ -86,8 +91,13 @@ export var InterestsPageTemplate = Container.template($ => ({
 						},
 						onTouchEnded: function(container) {
 							container.container.skin = ActionItemsSkin;
-							ApiManager.PostDecision(Session.getUser().id, Session.getUser().currentInterest - 1, "dislike");
-							nextCard(container.container.container.last);
+							if (!Session.isEndOfInterests()) {
+								ApiManager.PostDecision(Session.getUser().uid, Session.getCurrentInterests().id, "dislike", function(response) {
+									nextCard(container.container.container.last);
+								}, function() {
+									// SHOW CONNECTION ERROR
+								});
+							}
 						}
 					})
 				}),
@@ -100,8 +110,13 @@ export var InterestsPageTemplate = Container.template($ => ({
 						},
 						onTouchEnded: function(container) {
 							container.container.skin = ActionItemsSkin;
-							ApiManager.PostDecision(Session.getUser().id, Session.getUser().currentInterest - 1, "pass");
-							nextCard(container.container.container.last);
+							if (!Session.isEndOfInterests()) {
+								ApiManager.PostDecision(Session.getUser().uid, Session.getCurrentInterests().id, "pass", function(response) {
+									nextCard(container.container.container.last);
+								}, function() {
+									// SHOW CONNECTION ERROR
+								});
+							}
 						}
 					})
 				})
@@ -115,10 +130,13 @@ export var InterestsPageTemplate = Container.template($ => ({
 }));
 
 function nextCard(interestCard) {
-	if (ApiManager.NextInterestExists(Session.getUser().id)) {
-		var interest = ApiManager.GetNextInterest(Session.getUser().id);
-		interestCard.cardTitle.string = interest.title;
+	Session.makeDecision();
+	if (Session.hasNextInterest()) {
+		var interest = Session.getNextInterests();
+		interestCard.cardTitle.string = interest.name;
 		interestCard.cardPicture.url = interest.url;
+	} else {
+		// SHOW "NO NEW DECISIONS" CARD
 	}
 }
 
@@ -130,11 +148,16 @@ var InterestCardTemplate = Container.template($ => ({
 	active: true,
 	behavior: Behavior({
 		onDisplayed: function(container, data) {
-			if (container.cardTitle.string == "" && ApiManager.NextInterestExists(Session.getUser().id)) {
-				var interest = ApiManager.GetNextInterest(Session.getUser().id);
-				container.cardTitle.string = interest.title;
-				container.cardPicture.url = interest.url;
-			}
+			ApiManager.GetNextInterests(Session.getUser().uid, function(response) {
+				Session.setInterests(response.interests);
+				if (Session.hasNextInterest()) {
+					var interest = Session.getNextInterests();
+					container.cardTitle.string = interest.name;
+					container.cardPicture.url = interest.url;
+				}
+			}, function(error) {
+				// SHOW THE ERROR
+			});
 		}
 	}),
 	/*behavior: Behavior({
