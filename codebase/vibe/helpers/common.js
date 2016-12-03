@@ -1,12 +1,13 @@
 // PUT ANYTHING VARIABLES, SKINS, STYLES, AND TEMPLATES MIGHT BE USEFULL
 // ACROSS PAGES IN HERE AND MAKE SURE TO IMPORT THESE ON THAT PAGE
 
-import { Push } from '../libraries/transition';
+import { Push, CrossFade } from '../libraries/transition';
 import { ConnectPageTemplate } from '../screens/connect-page';
 import { InterestsPageTemplate } from '../screens/interests-page';
 import { LocatePageTemplate } from '../screens/locate-page';
 import { LoginSignupPageTemplate } from '../screens/login-signup-page';
 import { MatchPageTemplate } from '../screens/match-page';
+import { OffPageTemplate } from '../screens/off-page';
 import { ProfilePageTemplate } from '../screens/profile-page';
 import { SplashPageTemplate } from '../screens/splash-page';
 import { UpdateInterestsPageTemplate } from '../screens/update-interests-page';
@@ -259,6 +260,17 @@ export var CommonTemplates = {
 					})
 				}));
 			}
+			contents.push(new Container({
+				top: 0, width: 30, height: 10,
+				active: true,
+				behavior: Behavior({
+					onTouchEnded: function(container) {
+						let mainContainer = container.container.container;
+						mainContainer.container.run(new CrossFade(), mainContainer, CommonPages.Off,
+							{ duration: CommonVars.TransitionDuration });
+					}
+				})
+			}));
 			return contents;
 		}()
 	})),
@@ -270,6 +282,7 @@ export var CommonPages = {
 	Locate: new LocatePageTemplate({}),
 	LoginSignup: new LoginSignupPageTemplate({}),
 	Match: new MatchPageTemplate({}),
+	Off: new OffPageTemplate({}),
 	Profile: new ProfilePageTemplate({}),
 	Splash: new SplashPageTemplate({}),
 	UpdateInterests: new UpdateInterestsPageTemplate({}),

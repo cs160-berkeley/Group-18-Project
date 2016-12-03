@@ -8,6 +8,7 @@ let URLS = {
 	USERS: baseUrl + "/users",
 	USER_NEXT_INTERESTS: function(uid) { return baseUrl + "/users/" + uid + "/interests"},
 	USER_DECISIONS: function(uid) { return baseUrl + "/users/" + uid + "/decisions"},
+	USER_MATCH: function(uid) { return baseUrl + "/users/" + uid + "/match"},
 	DECISION: function(id) { return baseUrl + "/decisions/" + id },
 	DECISIONS: baseUrl + "/decisions",
 	LOGIN: function(access_code) { return baseUrl + "/kinoma_login?access_code=" + access_code },
@@ -33,8 +34,8 @@ export var ApiManager = {
 		var json = {decision: { decision_type: newType }};
 		genericApiCall(URLS.DECISION(decisionId), METHODS.PATCH, json, callbackSuccess, callbackFailure);
 	},
-	GetMatches: function(userUid, callbackSuccess, callbackFailure) {
-		genericApiCall(URLS.USER_MATCHES(userUid), METHODS.GET, null, callbackSuccess, callbackFailure);
+	GetUserMatch: function(userUid, callbackSuccess, callbackFailure) {
+		genericApiCall(URLS.USER_MATCH(userUid), METHODS.GET, null, callbackSuccess, callbackFailure);
 	},
 	GetUserDecisions: function(userUid, callbackSuccess, callbackFailure) {
 		genericApiCall(URLS.USER_DECISIONS(userUid), METHODS.GET, null, callbackSuccess, callbackFailure);
