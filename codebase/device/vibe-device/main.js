@@ -21,4 +21,10 @@ class AppBehavior extends Behavior {    onLaunch(application) {        Pins.co
 		            ground: {pin: 53, type: "Ground" },
 		            digital: {pin: 54, direction: "output" },    
 		        }
+	        },
+	        battery: {
+	        	require: "Analog",
+	        	pins: {
+	        		analog: { pins: 59 },	                power:   { pin: 60, voltage: 5, type: "Power" },	                ground:   { pin: 61, type: "Ground" } 
+	        	}
 	        },        },  success => {            if (success) {                Pins.share("ws", {zeroconf: true, name: "pins-share"});                application.add(new MainContainer({ status: "Ready!" }));            } else {                application.add(new MainContainer({ status: "Error!" }));            };        });    }}application.behavior = new AppBehavior();

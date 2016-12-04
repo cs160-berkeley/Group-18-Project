@@ -16,7 +16,7 @@ export var  MatchPageTemplate = Container.template($ => ({
 			extraBackAction: function(container) {
 				if (PinsManager.Connected()) {
 					navigating = true;
-					PinsManager.RemotePins.invoke("/vibration/write", 0);
+					PinsManager.VibrationOff();
 				}
 			}
 		}),
@@ -69,7 +69,7 @@ export var  MatchPageTemplate = Container.template($ => ({
 			text: "Accept",
 			action: function (container) {
 				if (PinsManager.Connected()) {
-					PinsManager.RemotePins.invoke("/vibration/write", 0);
+					PinsManager.VibrationOff();
 					navigating = true;
 				}
 				let mainContainer = container.container;
@@ -79,16 +79,14 @@ export var  MatchPageTemplate = Container.template($ => ({
 		})
 	],
 	behavior: Behavior({
-		onDisplayed: function(container, data) {	    	container.interval = 500;	        container.duration = 10000000;        	container.start();
+		onDisplayed: function(container, data) {	    	container.interval = 500;	        container.duration = 10000000000;        	container.start();
         	navigating = false;	    },
 		onTimeChanged: function(container) {
 			if (vibrationOn) {
-				if (PinsManager.Connected()) 
-					PinsManager.RemotePins.invoke("/vibration/write", 0);
+				PinsManager.VibrationOn();
 				vibrationOn = false;
 			} else if (!navigating) {
-				if (PinsManager.Connected())
-					PinsManager.RemotePins.invoke("/vibration/write", 1);
+				PinsManager.VibrationOff();
 				vibrationOn = true;
 			}
 		}

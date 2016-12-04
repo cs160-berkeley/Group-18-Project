@@ -16,8 +16,15 @@ export var WelcomePageTemplate = Container.template($ => ({
 		onDisplayed: function() {
 			PinsManager.SetupPins();
 		},
-		onCreate: function(container, data) {	    	container.interval = 2000;	        container.duration = 1;        	container.start();	    },
-		onTimeChanged: function(container) {	
+		onCreate: function(container, data) {	    	container.interval = 1000;	        //container.duration = 1000000000000;        	container.start();	    },
+		onTimeChanged: function(container) {
+			if (PinsManager.Connected()) {
+				let mainContainer = container;
+				mainContainer.container.run(new Push(), mainContainer, CommonPages.LoginSignup,
+					{ duration: CommonVars.TransitionDuration, direction: "left" });
+			}
+		},
+		onTouchEnded: function(container) {
 			let mainContainer = container;
 			mainContainer.container.run(new Push(), mainContainer, CommonPages.LoginSignup,
 				{ duration: CommonVars.TransitionDuration, direction: "left" });

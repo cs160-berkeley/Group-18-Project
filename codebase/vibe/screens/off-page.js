@@ -52,7 +52,7 @@ export var OffPageTemplate = Container.template($ => ({
 					{ duration: CommonVars.TransitionDuration });
 			} else {
 				let mainContainer = container;
-				mainContainer.container.run(new CrossFade(), mainContainer, CommonPages.LoginSignup,
+				mainContainer.container.run(new CrossFade(), mainContainer, CommonPages.Splash,
 					{ duration: CommonVars.TransitionDuration });
 			}
 		}
