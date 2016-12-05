@@ -1,5 +1,8 @@
 import { CommonPages, CommonVars, CommonTemplates, CommonSkins, CommonStyles } from "../helpers/common";
-import { Push } from '../libraries/transition';
+import { ApiManager } from "../helpers/api-manager";
+import { PinsManager } from "../helpers/pins-manager";
+import { Session } from "../helpers/sessions";
+import { Push, CrossFade } from '../libraries/transition';
 
 export var SplashPageTemplate = Container.template($ => ({
 	top: 0, left: 0, right: 0, bottom: 0,
@@ -10,8 +13,7 @@ export var SplashPageTemplate = Container.template($ => ({
 	}),
 	active: true,
 	behavior: Behavior({
-		onCreate: function(container, data) {	    	//container.interval = 2600;	        //container.duration = 1;        	//container.start();	    },
-	    onDisplayed: function(container) {	    	container.interval = 2600;	        container.duration = 1;        	container.start();
+	    onDisplayed: function(container) {	    	container.interval = 2600;        	container.start();
         	CommonVars.AppWidth = container.width;
 			CommonVars.AppHeight = container.height;
 			trace(container.width + '\n');

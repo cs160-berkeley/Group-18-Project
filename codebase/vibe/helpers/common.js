@@ -7,6 +7,8 @@ import { InterestsPageTemplate } from '../screens/interests-page';
 import { LocatePageTemplate } from '../screens/locate-page';
 import { LoginSignupPageTemplate } from '../screens/login-signup-page';
 import { MatchPageTemplate } from '../screens/match-page';
+import { MatchCanceledPageTemplate } from '../screens/match-canceled-page';
+import { MatchWaitingPageTemplate } from '../screens/match-waiting-page';
 import { OffPageTemplate } from '../screens/off-page';
 import { ProfilePageTemplate } from '../screens/profile-page';
 import { SplashPageTemplate } from '../screens/splash-page';
@@ -155,10 +157,10 @@ export var CommonTemplates = {
 			new Label({
 				name: "buttonText",
 				left: 0, right: 0,
-				top:  $.textTop != null ? $.textTop : 10,
+				top:  $.textTop != null ? $.textTop : 12,
 				string: $.text,
 				style: new Style({ 
-					font: ($.textSize != null ? $.textSize + "px" : "26px") + " Segoe UI Semilight", 
+					font: ($.textSize != null ? $.textSize + "px" : "20px") + " Montserrat", 
 					color: "white", horizontal: "center"
 				})
 			})
@@ -167,7 +169,7 @@ export var CommonTemplates = {
 			onTouchBegan: function(container) {
 				container.skin = CommonSkins.PrimaryDark;
 				container.buttonText.style = new Style({ 
-					font: ($.textSize != null ? $.textSize + "px" : "26px") + " Segoe UI Semilight", 
+					font: ($.textSize != null ? $.textSize + "px" : "20px") + " Montserrat", 
 					color: "white", horizontal: "center"
 				});
 				if ($.onButtonDown) $.onButtonDown(container);
@@ -176,7 +178,7 @@ export var CommonTemplates = {
 				container.skin = undefined;
 				container.skin = CommonSkins.Primary;
 				container.buttonText.style = new Style({ 
-					font: ($.textSize != null ? $.textSize + "px" : "26px") + " Segoe UI Semilight", 
+					font: ($.textSize != null ? $.textSize + "px" : "20px") + " Montserrat", 
 					color: "white", horizontal: "center"
 				})
 				if ($.action) $.action(container);
@@ -282,6 +284,8 @@ export var CommonPages = {
 	Locate: new LocatePageTemplate({}),
 	LoginSignup: new LoginSignupPageTemplate({}),
 	Match: new MatchPageTemplate({}),
+	MatchCanceled: new MatchCanceledPageTemplate({}),
+	MatchWaiting: new MatchWaitingPageTemplate({}),
 	Off: new OffPageTemplate({}),
 	Profile: new ProfilePageTemplate({}),
 	Splash: new SplashPageTemplate({}),

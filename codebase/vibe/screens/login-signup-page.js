@@ -1,6 +1,8 @@
 import { CommonPages, CommonVars, CommonTemplates, CommonSkins, CommonStyles } from "../helpers/common";
-import { Push } from '../libraries/transition';
 import { ApiManager } from "../helpers/api-manager";
+import { PinsManager } from "../helpers/pins-manager";
+import { Session } from "../helpers/sessions";
+import { Push, CrossFade } from '../libraries/transition';
 
 let textTopMargin = 80;
 let FacebookButtonSkin = new Skin({ 
@@ -35,9 +37,11 @@ var NumPadButton = Container.template($ => ({
 					var access_code = digits[0] + digits[1] + digits[2] + digits[3] + digits[4] + digits[5];
 					ApiManager.Login(access_code, 
 						function(response) {
-							let mainContainer = container.container.container.container;
-							mainContainer.container.run(new Push(), mainContainer, CommonPages.Interests,
-								{ duration: CommonVars.TransitionDuration, direction: "left" });
+							if (Session.getUser() != undefined) {
+								let mainContainer = container.container.container.container;
+								mainContainer.container.run(new Push(), mainContainer, CommonPages.Interests,
+									{ duration: CommonVars.TransitionDuration, direction: "left" });
+							}
 						},
 						function(failure_response) { 
 							container.container.container.container.errorText.string = "User not found, please try again";

@@ -1,8 +1,11 @@
 import { CommonPages, CommonVars, CommonTemplates, CommonSkins, CommonStyles } from "../helpers/common";
-import { CrossFade } from '../libraries/transition';
 import { ApiManager } from "../helpers/api-manager";
+import { PinsManager } from "../helpers/pins-manager";
 import { Session } from "../helpers/sessions";
+import { Push, CrossFade } from '../libraries/transition';
 
+var vibrationOn = false;
+var navigating = false;
 export var OffPageTemplate = Container.template($ => ({
 	top: 0, bottom: 0, left: 0, right: 0,
 	skin: new Skin({ fill: "black" }),
@@ -19,11 +22,26 @@ export var OffPageTemplate = Container.template($ => ({
 				})
 			],
 			behavior: Behavior({
+				onDisplayed: function(container, data) {			    	container.interval = 500;		        	container.start();
+		        	navigating = false;
+			    },
+				onTimeChanged: function(container) {
+					if (PinsManager.Connected() && Session.hasMatch()) {
+						if (vibrationOn) {
+							PinsManager.VibrationOn();
+							vibrationOn = false;
+						} else if (!navigating) {
+							PinsManager.VibrationOff();
+							vibrationOn = true;
+						}
+					}
+				},
 				onTouchEnded: function(container) {
 					container.visible = false;
 					container.active = false;
+					navigating = true;		        	container.stop();
 					let mainContainer = container.container;
-					mainContainer.container.run(new CrossFade(), mainContainer, CommonPages.LoginSignup,
+					mainContainer.container.run(new CrossFade(), mainContainer, CommonPages.Match,
 						{ duration: CommonVars.TransitionDuration });
 				}
 			})
@@ -31,26 +49,51 @@ export var OffPageTemplate = Container.template($ => ({
 	],
 	active: true,
 	behavior: Behavior({
-		onCreate: function(container, data) {	    	container.interval = 5000;	        container.duration = 100000;        	container.start();	    },
+		onDisplayed: function(container, data) {	    	container.interval = 1000;        	container.start();	    },
 		onTimeChanged: function(container) {
 			if (Session.getUser() != undefined) {
-				ApiManager.GetUserMatch(Session.getUser().uid, function(response) {
+				
+				ApiManager.CheckForMatch(Session.getUser().uid, function(response) {
 					if (response.message != "Match Not Found") {
 						Session.match(response.match);
 						container.notification.visible = true;
 						container.notification.active = true;
+					} else {
+						ApiManager.GetMatchByUser(Session.getUser().uid, function(response) {
+							if (response.message != "Match Not Found") {
+								Session.match(response.match);
+								container.notification.visible = true;
+								container.notification.active = true;
+							}
+						}, function(error) {
+							if (error.message == "Match canceled") {
+								Session.unmatch();
+								container.notification.visible = false;
+								container.notification.active = false;
+							}
+						});
 					}
 				}, function(error) {
-					// HANDLE ERROR
+					if (error.message == "Match canceled") {
+						Session.unmatch();
+						container.notification.visible = false;
+						container.notification.active = false;
+					}
 				});
+				
+				
 			}
 		},
 		onTouchEnded: function(container) {
 			if (Session.getUser() != undefined) {
+				container.first.stop();
+				navigating = true;
 				let mainContainer = container;
 				mainContainer.container.run(new CrossFade(), mainContainer, CommonPages.Interests,
 					{ duration: CommonVars.TransitionDuration });
 			} else {
+				container.first.stop();
+				navigating = true;
 				let mainContainer = container;
 				mainContainer.container.run(new CrossFade(), mainContainer, CommonPages.Splash,
 					{ duration: CommonVars.TransitionDuration });

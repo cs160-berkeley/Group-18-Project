@@ -1,7 +1,8 @@
 import { CommonPages, CommonVars, CommonTemplates, CommonSkins, CommonStyles } from "../helpers/common";
 import { ApiManager } from "../helpers/api-manager";
+import { PinsManager } from "../helpers/pins-manager";
 import { Session } from "../helpers/sessions";
-import { Push } from '../libraries/transition';
+import { Push, CrossFade } from '../libraries/transition';
 
 let ActionBarHeight = 110;
 let ActionButtonSize = ActionBarHeight * 0.8;

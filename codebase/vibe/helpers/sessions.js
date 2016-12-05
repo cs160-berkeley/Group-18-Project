@@ -1,5 +1,6 @@
 var currentUser = undefined;
 var currentMatch = undefined;
+var currentMatchUser = undefined;
 var upcomingInterests = [];
 export var Session = {
 	getUser: function() {
@@ -11,14 +12,23 @@ export var Session = {
 	end: function() {
 		currentUser = undefined;
 	},
+	hasMatch: function() {
+		return currentMatch != undefined;
+	},
 	getMatch: function() {
 		return currentMatch;
 	},
-	match: function(matchUser) {
-		currentMatch = matchUser;
+	getMatchUser: function() {
+		return currentMatchUser;
+	},
+	match: function(match) {
+		currentMatch = match;
+		if (currentUser.id == currentMatch.user1.id) currentMatchUser = currentMatch.user2;
+		else currentMatchUser = currentMatch.user1;
 	},
 	unmatch: function() {
 		currentMatch = undefined;
+		currentMatchUser = undefined
 	},
 	setInterests: function(interests) {
 		upcomingInterests = interests;

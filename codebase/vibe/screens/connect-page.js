@@ -1,5 +1,8 @@
 import { CommonPages, CommonVars, CommonTemplates, CommonSkins, CommonStyles } from "../helpers/common";
+import { ApiManager } from "../helpers/api-manager";
 import { PinsManager } from "../helpers/pins-manager";
+import { Session } from "../helpers/sessions";
+import { Push, CrossFade } from '../libraries/transition';
 
 export var ConnectPageTemplate = Container.template($ => ({
 	top: 0, left: 0, right: 0, bottom: 0,
@@ -41,7 +44,7 @@ export var ConnectPageTemplate = Container.template($ => ({
 	],
 	behavior: Behavior({
 		onCreate: function(container, data) {
-	    	container.interval = 2000;	        container.duration = 100000;        	container.start();
+	    	container.interval = 2000;        	container.start();
         	updateConnectionStatus(container);	    },
 		onTimeChanged: function(container) {
 			updateConnectionStatus(container);

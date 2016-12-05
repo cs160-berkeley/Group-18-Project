@@ -4,39 +4,24 @@ import { PinsManager } from "../helpers/pins-manager";
 import { Session } from "../helpers/sessions";
 import { Push, CrossFade } from '../libraries/transition';
 
-export var LocatePageTemplate = Container.template($ => ({
+export var MatchWaitingPageTemplate = Container.template($ => ({
 	top: 0, left: 0, right: 0, bottom: 0,
 	skin: CommonSkins.Background,
 	contents: [
 		new CommonTemplates.NavBar({ 
-			screenTitle: "Find your Match!",
+			screenTitle: "Waiting on Good Vibes",
 		}),
-		new Label({
-			top: 65, left: 34, right: 0, height: 30,
-			style: new Style({ font: "21px Apercu Bold", color: CommonVars.PrimaryColor, horizontal: "left" }),
-			string: "YOU'RE CLOSE"
-		}),
-		new Label({
-			top: 83, left: 35, right: 0, height: 30,
-			style: new Style({ font: "14px Apercu Regular", color: "gray", horizontal: "left" }),
-			string: "0.5mi Away"
+		new Text({
+			top: 370, left: 60, right: 60, height: 40,
+			style: new Style({ font: "19px " + CommonVars.TitleFont, color: "#424242", horizontal: "center" }),
+			string: "Please wait while we confirm with your match that there are good vibes."
 		}),
 		new Picture({
-			top: 120, width: 260, height: 260,
-			url: "",
-			behavior: Behavior({
-				onDisplayed: function(container) {
-					container.url = ApiManager.GetMap(
-						Session.getUser().latitude,
-						Session.getUser().longitude,
-						Session.getMatch().meet_point_latitude,
-						Session.getMatch().meet_point_longitude
-					);
-				}
-			})
+			top: 140, height: 200, width: 140,
+			url: "../assets/images/waiting.png",
 		}),
 		new CommonTemplates.BottomButton ({
-			text: "Kill the vibe!",
+			text: "Kill the Vibe",
 			action: function (container) {
 				ApiManager.CancelMatch(Session.getMatch().id, Session.getUser().uid, function(response) {
 					if (PinsManager.Connected()) {
@@ -53,20 +38,23 @@ export var LocatePageTemplate = Container.template($ => ({
 		})
 	],
 	behavior: Behavior({
-		onDisplayed: function(container) {
-			if (PinsManager.Connected()) {
-				PinsManager.VibrationOff();
-			}	    	container.interval = 1000;        	container.start();
-		},
-		onTimeChanged: function() {
-			ApiManager.GetMatchByUser(Session.getUser().uid, function(response) {}, function(error) {
-				if (error.message == "Match canceled") {
-					Session.unmatch();        			container.stop();
+		onDisplayed: function(container, data) {
+	    	container.interval = 1000;        	container.start();
+	    },
+		onTimeChanged: function(container) {
+			ApiManager.GetMatch(Session.getMatch().id, function(response) {
+				if (response.match.accepted) {        			container.stop();
+					let mainContainer = container;
+					mainContainer.container.run(new Push(), mainContainer, CommonPages.Locate,
+						{ duration: CommonVars.TransitionDuration, direction: "left" });
+				}
+			}, function (error) {
+				if (error == "Match canceled") {        			container.stop();
 					let mainContainer = container;
 					mainContainer.container.run(new Push(), mainContainer, CommonPages.MatchCanceled,
 						{ duration: CommonVars.TransitionDuration, direction: "right" });
 				}
 			});
-		}
+		},
 	})
 }));

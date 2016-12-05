@@ -1,6 +1,8 @@
 import { CommonPages, CommonVars, CommonTemplates, CommonSkins, CommonStyles } from "../helpers/common";
+import { ApiManager } from "../helpers/api-manager";
 import { PinsManager } from "../helpers/pins-manager";
-import { Push } from '../libraries/transition';
+import { Session } from "../helpers/sessions";
+import { Push, CrossFade } from '../libraries/transition';
 
 let DeviceSkin = new Skin({ 
 	width: 161, height: 453,
@@ -13,18 +15,19 @@ export var WelcomePageTemplate = Container.template($ => ({
 	skin: CommonSkins.Primary,
 	active: true,
 	behavior: Behavior({
-		onDisplayed: function() {
-			PinsManager.SetupPins();
+		onDisplayed: function(container) {
+			PinsManager.SetupPins();	    	container.interval = 1000;        	container.start();
 		},
-		onCreate: function(container, data) {	    	container.interval = 1000;	        //container.duration = 1000000000000;        	container.start();	    },
 		onTimeChanged: function(container) {
 			if (PinsManager.Connected()) {
+				container.stop();
 				let mainContainer = container;
 				mainContainer.container.run(new Push(), mainContainer, CommonPages.LoginSignup,
 					{ duration: CommonVars.TransitionDuration, direction: "left" });
 			}
 		},
 		onTouchEnded: function(container) {
+			container.stop();
 			let mainContainer = container;
 			mainContainer.container.run(new Push(), mainContainer, CommonPages.LoginSignup,
 				{ duration: CommonVars.TransitionDuration, direction: "left" });
