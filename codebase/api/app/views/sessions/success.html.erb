@@ -1,0 +1,60 @@
+
+
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<style>
+    body {
+        background-color: #FD8374;
+    }
+    .container {
+        position: fixed;
+        background-color: rgba(255,255,255, 0.0);
+        width: 300px;
+        left: 50%; margin-left: -150px;
+        top: 25%; bottom: 25%;
+        border-radius: 10px;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+    }
+    .vibe_logo {
+        position: relative;
+        width: 100%;
+        margin-top: 20px;
+        height: 15%;
+        background-image: url("<%= image_path('logo.png') %>");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center; 
+    }
+    .welcome_title {
+        position: relative;
+        width: 100%;
+        margin-top: 30px;
+        font-size: 35px;
+    }
+    .welcome_text {
+        position: relative;
+        width: 100%;
+        opacity: 0.8;
+        margin-top: 20px;
+    }
+    .access_code {
+        position: relative;
+        width: 80%;
+        left: 10%;
+        border-radius: 3px;
+        margin-top: 30px;
+        font-size: 50px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        background-color: white;
+        color: #FD8374;
+    }
+</style>
+
+<div class="container">
+    <div class="vibe_logo"></div>
+    <div class="welcome_title">Welcome, <%= @user.name.split(' ')[0] %>!</div>
+    <div class="welcome_text">Please use this code to login to the Vibe companion app...</div>
+    <div class="access_code"><%= @access_code %></div>
+</div>

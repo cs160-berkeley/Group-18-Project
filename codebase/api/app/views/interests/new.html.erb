@@ -1,0 +1,106 @@
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<style>
+    body {
+        background-color: #FD8374;
+    }
+    .container {
+        position: fixed;
+        background-color: rgba(255,255,255, 0.0);
+        width: 300px;
+        left: 50%; margin-left: -150px;
+        top: 10%;
+        border-radius: 10px;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+    }
+    .instructions {
+        color: white;
+        font-family: 'Roboto', sans-serif;
+        text-align: left;
+        font-size: 14px;
+    }
+    .instructions a {
+        color: white;
+    }
+    .instructions br {
+        line-height: 20px;
+    }
+    .interest_form {
+        position: absolute;
+    }
+    input {
+        position: relative;
+        width: 290px;
+        height: 40px;
+        background-color: #FBFBFB;
+        margin-bottom: 10px;
+        padding-left: 10px;
+        border-radius: 2px;
+        border: none;
+    }
+    input:focus {
+        background-color: #FFFFFF;
+    }
+    input:focus,
+    select:focus,
+    textarea:focus,
+    button:focus {
+        outline: none;
+    }
+    .welcome_title {
+        position: relative;
+        width: 100%;
+        top: 30%;
+        font-size: 35px;
+        margin-bottom: 20px;
+    }
+    .facebook_button {
+        position: relative;
+        width: 300px;
+        height: 60px;
+        margin-top: 10px;
+        text-align: center;
+        background-color: white;
+        border-radius: 2px;
+        -webkit-transition: -webkit-transform 0.3s; /* Safari */
+        transition: transform 0.3s, transform 0.3s;
+        cursor: pointer;
+        cursor: hand;
+        font-family: 'Montserrat', sans-serif;
+        color: #FD8374;
+        text-decoration: none;
+        font-size: 20px;
+    }
+    .facebook_button:hover {
+        -ms-transform: scale(1.05,1.05); /* IE 9 */
+        -webkit-transform: scale(1.05,1.05); /* Safari */
+        transform: scale(1.05,1.05); /* Standard syntax */
+    }
+</style>
+
+<div class="container">
+    <div class="welcome_title">Add an interest!</div>
+    
+    <%= form_tag(controller: "interests", action: "create", method: "post", :class => "interest_form") do %>
+        
+        <input name="interest[name]" placeholder="Interest name" type="text"/>
+        
+        <input name="interest[url]" placeholder="Image url" type="text"/>
+        
+        <input name="interest[priority]" placeholder="Priority (1-10000)" type="text"/>
+        
+        <input type="submit" class="facebook_button"/>
+        
+    <% end %>
+    
+    <div class="instructions">
+        <br><br><strong>Instructions:</strong> <br>
+        1. Think of an interest <br>
+        2. Make sure its not on the <a href="https://vibe-alexyku.c9users.io/interests/all">list</a><br>
+        3. Find a sorta square image online, grab the url to the image<br>
+        4. Check that the image is valid by pasting it into your browser<br>
+        5. Set a priority between 100 - 5000 (lower being higher priority)<br>
+        6. Click "Submit"<br><br>
+    </div>
+</div>

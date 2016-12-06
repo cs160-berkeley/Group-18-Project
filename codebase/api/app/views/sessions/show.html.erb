@@ -1,0 +1,57 @@
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<style>
+    body {
+        background-color: #FD8374;
+    }
+    .container {
+        position: fixed;
+        background-color: rgba(255,255,255, 0.0);
+        width: 300px;
+        left: 50%; margin-left: -150px;
+        top: 20%; bottom: 25%;
+        border-radius: 10px;
+    }
+    .vibe_logo {
+        position: absolute;
+        width: 100%;
+        top: 10%;
+        height: 45%;
+        background-image: url("<%= image_path('logo.png') %>");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center; 
+    }
+    .facebook_button {
+        position: absolute;
+        width: 90%;
+        left: 5%;
+        height: 60px;
+        top: 65%;
+        text-align: center;
+        background-color: white;
+        border-radius: 2px;
+        -webkit-transition: -webkit-transform 0.3s; /* Safari */
+        transition: transform 0.3s, transform 0.3s;
+        cursor: pointer;
+        cursor: hand;
+    }
+    .facebook_button:hover {
+        -ms-transform: scale(1.05,1.05); /* IE 9 */
+        -webkit-transform: scale(1.05,1.05); /* Safari */
+        transform: scale(1.05,1.05); /* Standard syntax */
+    }
+    .facebook_button_link {
+        position: absolute;
+        top: 20px; left: 0; right: 0;
+        font-family: 'Montserrat', sans-serif;
+        color: #FD8374;
+        text-decoration: none;
+    }
+</style>
+
+<div class="container">
+    <div class="vibe_logo"></div>
+    <a href="/auth/facebook/?type=login" class="facebook_button">
+        <span class="facebook_button_link">LOGIN WITH FACEBOOK</span>
+    </a>
+</div>
