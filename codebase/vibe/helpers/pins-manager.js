@@ -6,7 +6,7 @@ var vibeActive = false;
 export var PinsManager = {
 	RemotePins: null,
 	GetBatteryLevel: function (callback) {
-		if (PinsManager.Connected()) PinsManager.RemotePins.invoke("/battery/read", value => { 
+		if (PinsManager.InitialConnected()) PinsManager.RemotePins.invoke("/battery/read", value => { 
 			batteryLevel = value;
 			callback(value); 
 			PinsManager.UpdateIndicator();
@@ -44,6 +44,9 @@ export var PinsManager = {
 	},
 	Connected: function () {
 		return vibeActive && this.RemotePins != null;
+	},
+	InitialConnected: function () {
+		return this.RemotePins != null;
 	},
 	SetupPins: function () {
 		if (!pinsSetup) {

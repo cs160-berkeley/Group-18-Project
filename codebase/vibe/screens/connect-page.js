@@ -43,7 +43,7 @@ export var ConnectPageTemplate = Container.template($ => ({
 		}),
 	],
 	behavior: Behavior({
-		onCreate: function(container, data) {
+		onDisplayed: function(container, data) {
 	    	container.interval = 2000;        	container.start();
         	updateConnectionStatus(container);	    },
 		onTimeChanged: function(container) {
@@ -54,16 +54,16 @@ export var ConnectPageTemplate = Container.template($ => ({
 
 var previouslyConnected = "not false";
 function updateConnectionStatus(container) {
-	if (PinsManager.Connected() && previouslyConnected != true) {
+	if (PinsManager.InitialConnected() && previouslyConnected != true) {
 		container.connectionTitle.string = "Vibe Connected!";
 		container.connectionDescription.string = "You're all set! Happy vibing!";
 		container.deviceContainer.connectionImage.url = "../assets/images/connection-good.png";
 		previouslyConnected = true;
-	} else if (PinsManager.Connected()) {
+	} else if (PinsManager.InitialConnected()) {
 		PinsManager.GetBatteryLevel(function(batteryLevelPercent) {
 			container.deviceContainer.batteryLevel.width = batteryLevelPercent * 110;
 		});
-	} else if (!PinsManager.Connected() && previouslyConnected != false) {
+	} else if (!PinsManager.InitialConnected() && previouslyConnected != false) {
 		container.connectionTitle.string = "Device not found!";
 		container.connectionDescription.string = "Please connect your device to your phone's bluetooth.";
 		container.deviceContainer.connectionImage.url = "../assets/images/connection-bad.png";

@@ -19,7 +19,7 @@ export var WelcomePageTemplate = Container.template($ => ({
 			PinsManager.SetupPins();	    	container.interval = 1000;        	container.start();
 		},
 		onTimeChanged: function(container) {
-			if (PinsManager.Connected()) {
+			if (PinsManager.InitialConnected()) {
 				container.stop();
 				let mainContainer = container;
 				mainContainer.container.run(new Push(), mainContainer, CommonPages.LoginSignup,

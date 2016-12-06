@@ -13,12 +13,12 @@ let ActionItemsSkin = new Skin({
 	texture: new Texture("../assets/images/action-items-btn.png"),
     aspect: "stretch"
 });
-let ActionItemsLikeSkin = new Skin({ 
+let ActionItemsDislikeSkin = new Skin({ 
 	width: ActionBarImageWidth, height: ActionBarImageHeight,
 	texture: new Texture("../assets/images/action-items-btn-like.png"),
     aspect: "stretch"
 });
-let ActionItemsDislikeSkin = new Skin({ 
+let ActionItemsLikeSkin = new Skin({ 
 	width: ActionBarImageWidth, height: ActionBarImageHeight,
 	texture: new Texture("../assets/images/action-items-btn-dislike.png"),
     aspect: "stretch"
@@ -56,12 +56,12 @@ export var InterestsPageTemplate = Container.template($ => ({
 					active: true,
 					behavior: Behavior({
 						onTouchBegan: function(container) {
-							container.container.skin = ActionItemsLikeSkin;
+							container.container.skin = ActionItemsDislikeSkin;
 						},
 						onTouchEnded: function(container) {
 							container.container.skin = ActionItemsSkin;
 							if (!Session.isEndOfInterests()) {
-								ApiManager.PostDecision(Session.getUser().uid, Session.getCurrentInterests().id, "like", function(response) {
+								ApiManager.PostDecision(Session.getUser().uid, Session.getCurrentInterests().id, "dislike", function(response) {
 									nextCard(container.container.container.last);
 								}, function() {
 									// SHOW CONNECTION ERROR
@@ -76,12 +76,12 @@ export var InterestsPageTemplate = Container.template($ => ({
 					active: true,
 					behavior: Behavior({
 						onTouchBegan: function(container) {
-							container.container.skin = ActionItemsDislikeSkin;
+							container.container.skin = ActionItemsLikeSkin;
 						},
 						onTouchEnded: function(container) {
 							container.container.skin = ActionItemsSkin;
 							if (!Session.isEndOfInterests()) {
-								ApiManager.PostDecision(Session.getUser().uid, Session.getCurrentInterests().id, "dislike", function(response) {
+								ApiManager.PostDecision(Session.getUser().uid, Session.getCurrentInterests().id, "like", function(response) {
 									nextCard(container.container.container.last);
 								}, function() {
 									// SHOW CONNECTION ERROR
