@@ -102,14 +102,19 @@ export var LoginSignupPageTemplate = Container.template($ => ({
 			string: "Welcome to Vibe!"
 		}),
 		new Label({
-			top: textTopMargin + 50, left: 0, right: 0, height: 30,
+			top: textTopMargin + 40, left: 0, right: 0, height: 30,
 			style: CommonStyles.CenterParagraph,
 			string: "To login, please obtain a 6-digit"
 		}),
 		new Label({
-			top: textTopMargin + 73, left: 0, right: 0, height: 30,
+			top: textTopMargin + 58, left: 0, right: 0, height: 30,
 			style: CommonStyles.CenterParagraph,
 			string: "code using our web portal!"
+		}),
+		new Label({
+			top: textTopMargin + 90, left: 0, right: 0, height: 30,
+			style: new Style({ font: "14px " + CommonVars.ParagraphFont + " Regular", color: CommonVars.PrimaryColor, horizontal: "center" }),
+			string: "bit.ly/vibe-login"
 		}),
 		new Label({
 			top: textTopMargin + 120, left: 0, right: 0, height: 30,

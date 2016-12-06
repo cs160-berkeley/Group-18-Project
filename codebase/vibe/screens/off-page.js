@@ -53,16 +53,15 @@ export var OffPageTemplate = Container.template($ => ({
 	behavior: Behavior({
 		onDisplayed: function(container, data) {	    	container.interval = 1000;        	container.start();	    },
 		onTimeChanged: function(container) {
-			if (Session.getUser() != undefined) {
-				
+			if (Session.getUser() != undefined && PinsManager.IsActive()) {
 				ApiManager.CheckForMatch(Session.getUser().uid, function(response) {
-					if (response.message != "Match Not Found") {
+					if (response.message != "Match Not Found" && !navigating) {
 						Session.match(response.match);
 						container.notification.visible = true;
 						container.notification.active = true;
 					} else {
 						ApiManager.GetMatchByUser(Session.getUser().uid, function(response) {
-							if (response.message != "Match Not Found") {
+							if (response.message != "Match Not Found" && !navigating) {
 								Session.match(response.match);
 								container.notification.visible = true;
 								container.notification.active = true;
@@ -90,6 +89,8 @@ export var OffPageTemplate = Container.template($ => ({
 			if (Session.getUser() != undefined) {
 				container.first.stop();
 				navigating = true;
+				container.notification.visible = false;
+				container.notification.active = false;
 				let mainContainer = container;
 				mainContainer.container.run(new CrossFade(), mainContainer, CommonPages.Interests,
 					{ duration: CommonVars.TransitionDuration });
@@ -97,6 +98,8 @@ export var OffPageTemplate = Container.template($ => ({
 				container.first.stop();
 				navigating = true;
 				let mainContainer = container;
+				container.notification.visible = false;
+				container.notification.active = false;
 				mainContainer.container.run(new CrossFade(), mainContainer, CommonPages.Splash,
 					{ duration: CommonVars.TransitionDuration });
 			}

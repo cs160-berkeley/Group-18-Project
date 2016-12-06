@@ -2,4 +2,4 @@ import { CommonVars, CommonPages } from "helpers/common";
 
 //application.add(CommonPages.Splash);
 //application.add(CommonPages.LoginSignup);
-application.add(CommonPages.Off);
+application.add(CommonPages.Connect);

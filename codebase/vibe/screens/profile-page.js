@@ -4,6 +4,7 @@ import { Push } from '../libraries/transition';
 import { SystemKeyboard } from '../libraries/keyboard';
 import { FieldScrollerBehavior, FieldLabelBehavior } from '../libraries/field';
 import { ApiManager } from "../helpers/api-manager";
+import { PinsManager } from "../helpers/pins-manager";
 
 let descriptionTitle = "My Bio";
 export var ProfilePageTemplate = Container.template($ => ({
@@ -40,6 +41,37 @@ export var ProfilePageTemplate = Container.template($ => ({
 			left: 30, right: 30, top: 285,
 			style: CommonStyles.LeftParagraph,
 			string: descriptionTitle,
+		}),
+		new Container({
+			name: "toggle",
+			left: 30, right: 30, height: 36, bottom: 84,
+			contents: [
+				new Label({
+					name: "batteryLevel",
+					width: 200, height: 30,
+					style: new Style({ font: "20px " + CommonVars.TitleFont, color: "black", horizontal: "left" }),
+					bottom: 4, left: 0,
+					string: "Enable Matching:"
+				}),
+				new Picture({
+					bottom: 0, right: 0,
+					width: 110, height: 36,
+					name: "connectionImage",
+					url: "../assets/images/toggle-no.png",
+					active: true,
+					behavior: Behavior({
+						onTouchEnded: function(container) {
+							if (PinsManager.IsActive()) {
+								PinsManager.Deactivate()
+								container.url = "../assets/images/toggle-no.png";
+							} else {
+								PinsManager.Activate()
+								container.url = "../assets/images/toggle-yes.png";
+							}
+						}
+					})
+				}),
+			]
 		}),
 		new CommonTemplates.Button({
 			bottom: 20, left: 20, right: 20,

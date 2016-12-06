@@ -2,6 +2,7 @@ import Pins from "pins";
 
 var pinsSetup = false;
 var batteryLevel = 0.5;
+var vibeActive = false;
 export var PinsManager = {
 	RemotePins: null,
 	GetBatteryLevel: function (callback) {
@@ -10,6 +11,15 @@ export var PinsManager = {
 			callback(value); 
 			PinsManager.UpdateIndicator();
 		});
+	},
+	IsActive: function() { 
+		return vibeActive;
+	},
+	Activate: function() {
+		vibeActive = true;
+	},
+	Deactivate: function() {
+		vibeActive = false;
 	},
 	VibrationOn: function () {
 		PinsManager.UpdateIndicator();
@@ -33,7 +43,7 @@ export var PinsManager = {
 		}
 	},
 	Connected: function () {
-		return this.RemotePins != null;
+		return vibeActive && this.RemotePins != null;
 	},
 	SetupPins: function () {
 		if (!pinsSetup) {
