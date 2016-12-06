@@ -2,7 +2,7 @@ import { CommonPages, CommonVars, CommonTemplates, CommonSkins, CommonStyles } f
 import { ApiManager } from "../helpers/api-manager";
 import { PinsManager } from "../helpers/pins-manager";
 import { Session } from "../helpers/sessions";
-import { Push, CrossFade } from '../libraries/transition';
+import { Push, CrossFade } from '../libraries/transition'; 
 
 let textTopMargin = 80;
 let FacebookButtonSkin = new Skin({ 

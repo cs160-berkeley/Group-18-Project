@@ -4,7 +4,7 @@ import { Push } from '../libraries/transition';
 import { SystemKeyboard } from '../libraries/keyboard';
 import { FieldScrollerBehavior, FieldLabelBehavior } from '../libraries/field';
 import { ApiManager } from "../helpers/api-manager";
-import { PinsManager } from "../helpers/pins-manager";
+import { PinsManager } from "../helpers/pins-manager"; 
 
 let descriptionTitle = "My Bio";
 export var ProfilePageTemplate = Container.template($ => ({

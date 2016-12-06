@@ -2,7 +2,7 @@ import { CommonPages, CommonVars, CommonTemplates, CommonSkins, CommonStyles } f
 import { ApiManager } from "../helpers/api-manager";
 import { PinsManager } from "../helpers/pins-manager";
 import { Session } from "../helpers/sessions";
-import { Push, CrossFade } from '../libraries/transition';
+import { Push, CrossFade } from '../libraries/transition'; 
 
 export var MatchWaitingPageTemplate = Container.template($ => ({
 	top: 0, left: 0, right: 0, bottom: 0,
