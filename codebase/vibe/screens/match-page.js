@@ -10,16 +10,7 @@ export var  MatchPageTemplate = Container.template($ => ({
 	top: 0, left: 0, right: 0, bottom: 0,
 	skin: CommonSkins.Background,
 	contents: [
-		new CommonTemplates.NavBar({ 
-			screenTitle: "Vibing with...",  
-			backPage: "Interests",
-			extraBackAction: function(container) {
-				if (PinsManager.Connected()) {
-					navigating = true;
-					PinsManager.VibrationOff();
-				}
-			}
-		}),
+		new CommonTemplates.NavBar({ screenTitle: "Vibing with..." }),
 		new Label({
 			top: 62, left: 34, right: 0, height: 30,
 			style: new Style({ font: "18px Montserrat", color: CommonVars.PrimaryColor, horizontal: "left" }),
@@ -76,8 +67,9 @@ export var  MatchPageTemplate = Container.template($ => ({
 			})
 			
 		}),
-		new CommonTemplates.BottomButton ({
+		new CommonTemplates.Button ({
 			text: "Accept",
+			bottom: 80, left: 20, right: 20,
 			action: function (container) {
 				ApiManager.AcceptMatch(Session.getMatch().id, Session.getUser().uid, function(response) {
 					if (PinsManager.Connected()) {
@@ -85,7 +77,28 @@ export var  MatchPageTemplate = Container.template($ => ({
 						navigating = true;
 					}
 					let mainContainer = container.container;
+					mainContainer.stop();
 					mainContainer.container.run(new Push(), mainContainer, CommonPages.MatchWaiting,
+						{ duration: CommonVars.TransitionDuration, direction: "left" });
+				},
+				function(error) {
+					// HANDLE ERROR
+				});
+			}
+		}),
+		new CommonTemplates.Button ({
+			text: "Reject",
+			negativeButton: true,
+			bottom: 20, left: 20, right: 20,
+			action: function (container) {
+				ApiManager.CancelMatch(Session.getMatch().id, Session.getUser().uid, function(response) {
+					if (PinsManager.Connected()) {
+						navigating = true;
+						PinsManager.VibrationOff();
+					}
+					let mainContainer = container.container;
+					mainContainer.stop();
+					mainContainer.container.run(new Push(), mainContainer, CommonPages.Interests,
 						{ duration: CommonVars.TransitionDuration, direction: "left" });
 				},
 				function(error) {
@@ -99,9 +112,10 @@ export var  MatchPageTemplate = Container.template($ => ({
         	navigating = false;	    },
 		onTimeChanged: function(container) {
 			ApiManager.GetMatchByUser(Session.getUser().uid, function(response) {}, function(error) {
-				if (error.message == "Match canceled") {
-					Session.unmatch();        			container.stop();
+				if (error == "Match canceled" || error == "Match not found") {
+					Session.unmatch();
 					let mainContainer = container;
+					mainContainer.stop();
 					mainContainer.container.run(new Push(), mainContainer, CommonPages.MatchCanceled,
 						{ duration: CommonVars.TransitionDuration, direction: "right" });
 				}

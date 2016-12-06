@@ -21,7 +21,7 @@ export var  MatchCanceledPageTemplate = Container.template($ => ({
 			url: "../assets/images/sad-face.png",
 		}),
 		new CommonTemplates.BottomButton ({
-			text: "Back to Inerests",
+			text: "Back to Interests",
 			action: function (container) {
 				let mainContainer = container.container;
 				mainContainer.container.run(new Push(), mainContainer, CommonPages.Interests,

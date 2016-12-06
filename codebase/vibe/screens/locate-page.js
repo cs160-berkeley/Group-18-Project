@@ -37,6 +37,7 @@ export var LocatePageTemplate = Container.template($ => ({
 		}),
 		new CommonTemplates.BottomButton ({
 			text: "Kill the vibe!",
+			negativeButton: true,
 			action: function (container) {
 				ApiManager.CancelMatch(Session.getMatch().id, Session.getUser().uid, function(response) {
 					if (PinsManager.Connected()) {
@@ -58,9 +59,9 @@ export var LocatePageTemplate = Container.template($ => ({
 				PinsManager.VibrationOff();
 			}	    	container.interval = 1000;        	container.start();
 		},
-		onTimeChanged: function() {
+		onTimeChanged: function(container) {
 			ApiManager.GetMatchByUser(Session.getUser().uid, function(response) {}, function(error) {
-				if (error.message == "Match canceled") {
+				if (error == "Match canceled" || error == "Match not found") {
 					Session.unmatch();        			container.stop();
 					let mainContainer = container;
 					mainContainer.container.run(new Push(), mainContainer, CommonPages.MatchCanceled,

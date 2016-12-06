@@ -1,22 +1,36 @@
 import Pins from "pins";
 
 var pinsSetup = false;
+var batteryLevel = 0.5;
 export var PinsManager = {
 	RemotePins: null,
 	GetBatteryLevel: function (callback) {
-		if (PinsManager.Connected()) PinsManager.RemotePins.invoke("/battery/read", value => { callback(value); });
+		if (PinsManager.Connected()) PinsManager.RemotePins.invoke("/battery/read", value => { 
+			batteryLevel = value;
+			callback(value); 
+			PinsManager.UpdateIndicator();
+		});
 	},
 	VibrationOn: function () {
+		PinsManager.UpdateIndicator();
 		if (PinsManager.Connected()) PinsManager.RemotePins.invoke("/vibration/write", 1);
 	},
 	VibrationOff: function () {
+		PinsManager.UpdateIndicator();
 		if (PinsManager.Connected()) PinsManager.RemotePins.invoke("/vibration/write", 0);
 	},
 	LedOn: function () {
 		if (PinsManager.Connected()) PinsManager.RemotePins.invoke("/led/write", 1);
 	},
-	LedOn: function () {
+	LedOff: function () {
 		if (PinsManager.Connected()) PinsManager.RemotePins.invoke("/led/write", 0);
+	},
+	UpdateIndicator: function() {
+		if (batteryLevel < 0.20) {
+			PinsManager.LedOn();
+		} else {
+			PinsManager.LedOff();
+		}
 	},
 	Connected: function () {
 		return this.RemotePins != null;

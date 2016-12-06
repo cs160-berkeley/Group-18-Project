@@ -19,8 +19,8 @@ export var CommonVars = {
 	// Colors
 	PrimaryColor: "#FF8270",
 	PrimaryDarkColor: "#DD7161",
-	SecondaryColor: "#70C0FF",
-	SecondaryDarkColor: "#5A9ED4",
+	SecondaryColor: "#444444",
+	SecondaryDarkColor: "#282828",
 	TertiaryColor: "#7470FF",
 	TertiaryDarkColor: "#DC6D5D",
 	
@@ -99,6 +99,7 @@ export var CommonStyles = {
 	CenterParagraph: new Style({ font: "16px " + CommonVars.ParagraphFont + " Regular", color: "black", horizontal: "center" }),
 	LeftParagraph: new Style({ font: "16px " + CommonVars.ParagraphFont + " Regular", color: "black", horizontal: "left" }),
 	RightParagraph: new Style({ font: "16px " + CommonVars.ParagraphFont + " Regular", color: "black", horizontal: "right" }),
+	Button: new Style({ font: "20px " + CommonVars.TitleFont, color: "white", horizontal: "center" }), 
 };
 
 export var CommonTemplates = {
@@ -110,36 +111,27 @@ export var CommonTemplates = {
 		bottom: $.bottom,
 		left: $.left, right: $.right,
 		height: $.height != null ? $.height : 50,
-		skin: CommonSkins.Primary,
+		skin: $.negativeButton ? CommonSkins.Secondary : CommonSkins.Primary,
 		active: true,
 		contents: [
 			new Label({
 				name: "buttonText",
 				left: 0, right: 0,
-				top:  $.textTop != null ? $.textTop : 10,
+				top:  $.textTop != null ? $.textTop : 14,
 				string: $.text,
-				style: new Style({ 
-					font: ($.textSize != null ? $.textSize + "px" : "26px") + " Segoe UI Semilight", 
-					color: "white", horizontal: "center"
-				})
+				style: CommonStyles.Button
 			})
 		],
 		behavior: Behavior({
 			onTouchBegan: function(container) {
-				container.skin = CommonSkins.PrimaryDark;
-				container.buttonText.style = new Style({ 
-					font: ($.textSize != null ? $.textSize + "px" : "26px") + " Segoe UI Semilight", 
-					color: "white", horizontal: "center"
-				});
+				container.skin = $.negativeButton ? CommonSkins.SecondaryDark : CommonSkins.PrimaryDark;
+				container.buttonText.style = CommonStyles.Button;
 				if ($.onButtonDown) $.onButtonDown(container);
 			},
 			onTouchEnded: function(container) {
 				container.skin = undefined;
-				container.skin = CommonSkins.Primary;
-				container.buttonText.style = new Style({ 
-					font: ($.textSize != null ? $.textSize + "px" : "26px") + " Segoe UI Semilight", 
-					color: "white", horizontal: "center"
-				})
+				container.skin = $.negativeButton ? CommonSkins.Secondary : CommonSkins.Primary;
+				container.buttonText.style = CommonStyles.Button;
 				if ($.action) $.action(container);
 				if ($.onButtonUp) $.onButtonUp(container);
 			}
@@ -151,36 +143,27 @@ export var CommonTemplates = {
 		name: "buttonContainer",
 		bottom: 0, left: 0, right: 0,
 		height: $.height != null ? $.height : 50,
-		skin: CommonSkins.Primary,
+		skin: $.negativeButton ? CommonSkins.Secondary : CommonSkins.Primary,
 		active: true,
 		contents: [
 			new Label({
 				name: "buttonText",
 				left: 0, right: 0,
-				top:  $.textTop != null ? $.textTop : 12,
+				top:  $.textTop != null ? $.textTop : 15,
 				string: $.text,
-				style: new Style({ 
-					font: ($.textSize != null ? $.textSize + "px" : "20px") + " Montserrat", 
-					color: "white", horizontal: "center"
-				})
+				style: CommonStyles.Button
 			})
 		],
 		behavior: Behavior({
 			onTouchBegan: function(container) {
-				container.skin = CommonSkins.PrimaryDark;
-				container.buttonText.style = new Style({ 
-					font: ($.textSize != null ? $.textSize + "px" : "20px") + " Montserrat", 
-					color: "white", horizontal: "center"
-				});
+				container.skin = $.negativeButton ? CommonSkins.SecondaryDark : CommonSkins.PrimaryDark;
+				container.buttonText.style = CommonStyles.Button;
 				if ($.onButtonDown) $.onButtonDown(container);
 			},
 			onTouchEnded: function(container) {
 				container.skin = undefined;
-				container.skin = CommonSkins.Primary;
-				container.buttonText.style = new Style({ 
-					font: ($.textSize != null ? $.textSize + "px" : "20px") + " Montserrat", 
-					color: "white", horizontal: "center"
-				})
+				container.skin = $.negativeButton ? CommonSkins.Secondary : CommonSkins.Primary;
+				container.buttonText.style = CommonStyles.Button;
 				if ($.action) $.action(container);
 				if ($.onButtonUp) $.onButtonUp(container);
 			}

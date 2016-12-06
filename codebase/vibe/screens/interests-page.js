@@ -10,40 +10,28 @@ let ActionBarImageHeight = 319;
 let ActionBarImageWidth = 829;
 let ActionItemsSkin = new Skin({ 
 	width: ActionBarImageWidth, height: ActionBarImageHeight,
-	texture: new Texture("../assets/images/action-items.png"),
+	texture: new Texture("../assets/images/action-items-btn.png"),
     aspect: "stretch"
 });
 let ActionItemsLikeSkin = new Skin({ 
 	width: ActionBarImageWidth, height: ActionBarImageHeight,
-	texture: new Texture("../assets/images/action-items-like.png"),
+	texture: new Texture("../assets/images/action-items-btn-like.png"),
     aspect: "stretch"
 });
 let ActionItemsDislikeSkin = new Skin({ 
 	width: ActionBarImageWidth, height: ActionBarImageHeight,
-	texture: new Texture("../assets/images/action-items-dislike.png"),
+	texture: new Texture("../assets/images/action-items-btn-dislike.png"),
     aspect: "stretch"
 });
 let ActionItemsPassSkin = new Skin({ 
 	width: ActionBarImageWidth, height: ActionBarImageHeight,
-	texture: new Texture("../assets/images/action-items-pass.png"),
+	texture: new Texture("../assets/images/action-items-btn-pass.png"),
     aspect: "stretch"
 });
 
 export var InterestsPageTemplate = Container.template($ => ({
 	top: 0, left: 0, right: 0, bottom: 0,
 	skin: CommonSkins.BackgroundDark,
-	/*behavior: Behavior({
-		onCreate: function(container, data) {	    	container.interval = 10000;	        container.duration = 10000000;        	container.start();	    },
-		onTimeChanged: function(container) {
-			ApiManager.GetMatches(Session.getUser().id, function(matchUser) {
-				let mainContainer = container;
-				trace(matchUser.id + " Match User \n");
-				Session.match(matchUser);
-				mainContainer.container.run(new Push(), mainContainer, CommonPages.Match,
-					{ duration: CommonVars.TransitionDuration, direction: "left" });
-			});
-		}
-	}),*/
 	contents: [
 		new CommonTemplates.NavBar({ 
 			screenTitle: "Interests",
@@ -149,6 +137,9 @@ var InterestCardTemplate = Container.template($ => ({
 	active: true,
 	behavior: Behavior({
 		onDisplayed: function(container, data) {
+			if (PinsManager.Connected()) {
+				PinsManager.VibrationOff();
+			}
 			ApiManager.GetNextInterests(Session.getUser().uid, function(response) {
 				Session.setInterests(response.interests);
 				if (Session.hasNextInterest()) {
@@ -161,17 +152,6 @@ var InterestCardTemplate = Container.template($ => ({
 			});
 		}
 	}),
-	/*behavior: Behavior({
-		onCreate: function(container, data) {	    	container.interval = 5;	        container.duration = 10000000;        	container.start();	    },
-		onTimeChanged: function(container) {
-			if (activeCard != $.id) {
-				container.offset.x = container.offset.x - 1;
-				if (container.offset.x + container.offset.width <= 0) {
-					container.offset.x = container.offset.width;
-				}
-			}
-		}
-	}),*/
 	contents: [
 		new Picture({
 			name: "cardPicture",

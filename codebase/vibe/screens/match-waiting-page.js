@@ -22,6 +22,7 @@ export var MatchWaitingPageTemplate = Container.template($ => ({
 		}),
 		new CommonTemplates.BottomButton ({
 			text: "Kill the Vibe",
+			negativeButton: true,
 			action: function (container) {
 				ApiManager.CancelMatch(Session.getMatch().id, Session.getUser().uid, function(response) {
 					if (PinsManager.Connected()) {
@@ -42,7 +43,8 @@ export var MatchWaitingPageTemplate = Container.template($ => ({
 	    	container.interval = 1000;        	container.start();
 	    },
 		onTimeChanged: function(container) {
-			ApiManager.GetMatch(Session.getMatch().id, function(response) {
+			var match = Session.getMatch().id;
+			ApiManager.GetMatchByUser(Session.getUser().uid, function(response) {
 				if (response.match.accepted) {        			container.stop();
 					let mainContainer = container;
 					mainContainer.container.run(new Push(), mainContainer, CommonPages.Locate,

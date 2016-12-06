@@ -22,7 +22,9 @@ export var OffPageTemplate = Container.template($ => ({
 				})
 			],
 			behavior: Behavior({
-				onDisplayed: function(container, data) {			    	container.interval = 500;		        	container.start();
+				onDisplayed: function(container, data) {			    	container.interval = 500;
+					container.visible = false;
+					container.active = false;		        	container.start();
 		        	navigating = false;
 			    },
 				onTimeChanged: function(container) {
